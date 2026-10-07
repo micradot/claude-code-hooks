@@ -26,9 +26,9 @@ They grew out of daily use: one person running a small business with Claude Code
 
 ## Install
 
-1. Copy `hooks/` somewhere stable, e.g. `~/.claude/hooks/`.
+1. Copy the two `.py` hook files somewhere stable, e.g. `~/.claude/hooks/`.
 2. Add the Stop entries from `settings.example.json` to `~/.claude/settings.json`, or to a project's `.claude/settings.json`. Keep `"async": false`: an async Stop hook cannot block.
-3. Run `python3 tests/test_hooks.py` to confirm both work on your machine. Python 3.8+, standard library only.
+3. Run `python3 test_hooks.py` (from this folder) to confirm both work on your machine. Python 3.8+, standard library only.
 
 Optional settings, both as environment variables:
 
