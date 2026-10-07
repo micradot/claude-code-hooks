@@ -1,0 +1,20 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/reversible-ask-guard.py",
+            "async": false
+          },
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/operating-commitment-guard.py",
+            "async": false
+          }
+        ]
+      }
+    ]
+  }
+}
