@@ -74,6 +74,11 @@ PARK = [
     ("unless you want", r"\bunless you want\b"),
     ("i can do it on your word", r"\bi can (?:do|run|start|build|fix|take) (?:that|this|it|them)\b[^.\n]{0,60}\b(?:later|tomorrow|next|on your word|if you (?:want|like|say))\b"),
     ("hand it to a seat", r"\bhand it to (?:whatever|any|a fresh) seat\b"),
+    # Offers dressed as statements: "Sorting those four is a 15-minute job for me."
+    ("an N-minute job for me", r"\b(?:a|an) (?:\d+|few|five|ten|fifteen|twenty|thirty|quick|small|short)[- ]?(?:min(?:ute)?s?|second|sec)?[- ]?(?:job|fix|task|change|thing|edit) (?:for me|i can do)\b"),
+    ("i could do that", r"\bi could (?:do|sort|clear|fix|run|take|handle|build|tidy|reconcile|clean|close|chase|send|add|write|apply|install) (?:that|this|it|them|those|these)\b"),
+    ("i can sort that", r"\bi can (?:sort|clear|tidy|reconcile|clean up|close|chase|handle|apply|install) (?:that|this|it|them|those|these)\b"),
+    ("happy to", r"\bhappy to (?:do|sort|clear|fix|run|take|handle|build|apply|install|chase)\b"),
 ]
 # A phrase the author banned outright: it was false in most of the endings it
 # appeared in. No gate excuses it. Say the result, or name what needs the user.

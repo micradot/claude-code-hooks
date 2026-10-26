@@ -33,9 +33,20 @@ import runpy
 _CANDIDATE = runpy.run_path(STALL)
 _BASELINE = runpy.run_path(os.path.join(HERE, "pre_optout_stall.py"))
 
+# Deliberate tightenings since the oracle was frozen: these texts may newly block.
+INTENTIONAL_TIGHTENING = {
+    "Four rows are stale. Sorting those four by hand is a 15-minute job for me.",
+    "Four stale rows remain. I could clear those.",
+    "The backlog is still there. I can sort that.",
+    "The reviewer has not replied. Happy to chase it.",
+}
+
 def check_relaxation(text):
     old = _BASELINE["judge"](text)[0]
     new = _CANDIDATE["judge"](text)[0]
+    if text in INTENTIONAL_TIGHTENING:
+        check(f"intentional tightening: old={old}, new={new}", new.startswith("block"), True)
+        return
     (lambda ok, label: check(label, ok, True))(new == old or new == "allow-optout",
                       f"relax-only: old={old}, new={new}")
 
@@ -75,6 +86,12 @@ check("ask with a real gate (external send) -> allow", stall("Draft is below. Wa
 check("finished turn -> allow", stall("Fixed the bug and the tests pass. Undo: git revert abc123."), 0)
 check("ask inside a code fence is ignored -> allow", stall("Here is the template:\n\n```\nwant me to run this?\n```\n\nApplied."), 0)
 check("stop_hook_active -> allow", stall("Want me to apply it?", stop_hook_active=True), 0)
+check("offer as statement: N-minute job for me -> block", stall("Four rows are stale. Sorting those four by hand is a 15-minute job for me."), 2)
+check("offer as statement: i could clear those -> block", stall("Four stale rows remain. I could clear those."), 2)
+check("offer as statement: i can sort that -> block", stall("The backlog is still there. I can sort that."), 2)
+check("offer as statement: happy to chase -> block", stall("The reviewer has not replied. Happy to chase it."), 2)
+check("past quick job is a report -> allow", stall("Sorted the four rows by hand; it was a quick job. Undo: git revert abc123."), 0)
+check("could not, with a wall -> allow", stall("I couldn't install it: the permission was denied."), 0)
 check("out of scope cwd -> allow",
       run(STALL, {"session_id": "scope", "cwd": "/tmp", "last_assistant_message": "Want me to apply it?"},
           env={"STALL_GUARD_SCOPE": "/nonexistent-root"}), 0)
